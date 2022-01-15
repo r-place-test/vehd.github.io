@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Loading...</title>
+                <meta property="og:type" content="website">
+<meta property="og:title" content="Screenshot on Vehd">
+<meta property="og:description" content="The best image hosting website.">
+<meta name="theme-color" content="#4287f5">
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <style>
+        body{
+            background-color: #121212;
+            font-family: 'Poppins';
+            color: white;
+            font-weight: 400;
+  line-height: 1.6;
+        }
+
+        @font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJbecmNE.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+
+img {
+  width: 100%;
+  max-height: 600px;
+  border-radius: 10px;
+}
+        
+        ::-webkit-scrollbar {
+  width: 15px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #202020; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #242424; 
+}
+
+main {
+ 
+ max-width: 1000px;
+ padding: 3rem 0 4rem;
+ margin: 2rem auto;
+
+}
+
+article {
+ max-width: 550px;
+ margin: 0 auto;
+ padding: 1.5rem;
+ overflow-wrap: break-word;
+ background-color: #181818;
+ border-radius: 20px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.article2 {
+ max-width: 700px;
+ margin: 0 auto;
+ padding: 1.5rem;
+ overflow-wrap: break-word;
+ background-color: #181818;
+ border-radius: 20px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+    </style>
+    <body onload="getData()">
+        <div style="text-align: center; margin-top:50px">
+        <h1 style="font-size: 35px;" id="caption"></h1>
+        <label style="font-size: 16px;" id="time"></label><br><br>
+        <label style="font-size: 15px;" id="info"></label><br><br>
+        <div class="article2">
+            <img id="img"><br><br>
+            <label id="views" style="font-size: 17px;"></label>
+        </div><br>
+        <h1>Comments</h1>    
+    </div>   
+        <article style="margin-bottom: 100px;">
+            <div style="text-align: center;">
+            <p id="tooltip">Loading...</p>
+            <input maxlength="20" id="username" type="text" placeholder="Enter a username..." style="border: none; margin-left: 10px; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:70%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;">
+            <textarea id="msg" type="text" placeholder="Enter a comment..." style="border: none; margin-left: 10px; height: 70px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:70%; font-family: 'Poppins'; resize: vertical;"></textarea><br><br>
+            <button onclick="sendComment()" style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44;">Send!</button><br><br><br>
+            </div>
+            <div id="commentdiv">
+                <label id="comments"></label>
+            </div>
+        </article>
+    </body>
+    <script>
+var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEc2MXBwAAwC6c4ZOKRBhCZ2HKlE_XutVpl9Pp',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+        function getData(){
+            client.query(
+  q.Get(
+    q.Match(q.Index('post_by_url'), window.location.href.split("?")[1])
+  )
+)
+.then(function(ret){ 
+     
+document.getElementById("img").src = ret.data.preview_url
+document.getElementById("caption").innerHTML = ret.data.caption
+document.getElementById("views").innerHTML = "<i style=\"margin-right:5px\" class=\"far fa-eye\"></i><label style=\"margin-right:15px\">" + ret.data.views + "</label><i style=\"margin-right:5px\" class=\"far fa-comment\"></i>" + ret.data.comments.length
+document.getElementById("time").innerHTML = "<label style=\"font-size:18px\"><i>Uploaded at <b>" + ret.data.time + "</b> by <b>" + ret.data.uploader + "</b></i></label>"
+document.title = ret.data.caption.replace(/<br>/g, "") + " by " + ret.data.uploader + " [👁️" + ret.data.views + " | 💬" + ret.data.comments.length + "] [" + ret.data.file_name + " (" +ret.data.file_size + "KB)]"
+document.getElementById("tooltip").innerHTML = "What are your thoughts on " + ret.data.uploader + "'s post?"
+document.getElementById("info").innerHTML = "<label style=\"font-size:16px\"><i><i style=\"margin-right:5px\" class=\"far fa-folder\"></i>" + ret.data.file_name + " <b>[" + ret.data.file_size + "KB]</b><br><i style=\"margin-right:5px\" class=\"far fa-edit\"></i>Screenshotted at <b>" + ret.data.last_edited + "</b></i></label>"
+
+let comments = ""
+ret.data.comments.reverse()
+for (let i = 0; i < ret.data.comments.length; i++) {
+
+
+comments = comments + "<img style=\"width:25px; vertical-align:middle; border-radius:50%; height:25px;\" src=\"" + "https://i.imgur.com/bq01CCq.jpg" + "\" ><label style=\"; margin-left:5px; vertical-align:middle;\"><b>" + ret.data.comments[i].username + "</b> <font style=\"font-size:15px; color: #c4c4c4;\"><i>" + ret.data.comments[i].time + "</i></font></label><br><label style=\"font-size:15px;\">" + ret.data.comments[i].content + "</label><br><br>"
+}
+
+if(comments == ""){
+    document.getElementById("commentdiv").style.textAlign = "center";
+    document.getElementById("comments").innerHTML = "No comments to display."
+}
+else{
+document.getElementById("comments").innerHTML = comments
+}
+
+client.query(
+          q.Update(q.Ref(q.Collection("nbts"), ret.ref.value.id), {
+            data: {
+              views: ret.data.views + 1,
+            },
+          })
+        );
+
+
+
+})
+  
+.catch(function(e){
+
+
+    console.log(e)
+
+});
+
+
+        }
+
+        function sendComment(){
+
+            if( document.getElementById("msg").value == "" || document.getElementById("username").value == "")
+            {
+                alert("Please fill out all fields before posting a comment.")
+            }
+            else
+            {
+client.query(
+q.Get(
+q.Match(q.Index('post_by_url'), window.location.href.split("?")[1])
+)
+)
+.then(function(ret){ 
+ 
+    let newTime = new Date();
+let comments = ret.data.comments
+comments.push({content: document.getElementById("msg").value.replace(/</g, "").replace(/>/g, "").replace(/\n/g, "<br>"), username: document.getElementById("username").value.replace(/</g, "").replace(/>/g, ""), time: newTime.toUTCString()})
+client.query(
+      q.Update(q.Ref(q.Collection("nbts"), ret.ref.value.id), {
+        data: {
+          comments: comments
+        },
+      })
+    );
+
+    alert("Message posted!")
+})
+
+.catch(function(e){
+
+
+console.log(e)
+
+});
+
+            }
+
+
+
+}
+    </script>
+</html>
