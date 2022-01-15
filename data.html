@@ -126,7 +126,7 @@ var faunadb = window.faunadb
                 test = test + "<article><div style=\"text-align:center\"><a  href=\"index.html?"+ x.data[i].data.url + "\" style=\"font-size:23px; color:white\"><b>" + x.data[i].data.caption + "</b></a><br><i style=\"margin-right:5px\" class=\"far fa-eye\"></i><label style=\"margin-right:15px\">" +x.data[i].data.views + "</label><i style=\"margin-right:5px\" class=\"far fa-comment\"></i>" + x.data[i].data.comments.length + "<br><br><img src=\"" + x.data[i].data.preview_url + "\"><p><i>" + x.data[i].data.time +"</i></p></div></article>"
             }
             document.getElementById("test").innerHTML = test
-            document.getElementById("info").innerHTML = "Total Uploads: " + x.data.length + "<br>Total Amount Uploaded: " + mb + "KB [" + (mb/ 1024) + "MB]"
+            document.getElementById("info").innerHTML = "Total Uploads: " + x.data.length + "<br>Total Amount Uploaded: " + mb + "KB [" + (Math.round((mb/ 1024) * 10) / 10) + "MB]"
 
         });
 
