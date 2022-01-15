@@ -135,6 +135,8 @@ file.addEventListener("change", ev => {
 
         async function test(){
             
+            let customurl = document.getElementById("url").value
+            
             client.query(
   q.Get(
     q.Match(q.Index('post_by_url'), document.getElementById("url").value)
@@ -152,12 +154,20 @@ file.addEventListener("change", ev => {
                 alert("Please upload an image.")
             }
             else{
-                if(document.getElementById("caption").value == "" || document.getElementById("url").value == "" || document.getElementById("uploader").value == "")
+                if(document.getElementById("caption").value == "" || document.getElementById("uploader").value == "")
                 {
                     alert("Please fill out all fields.")
                 }
                 else
                 {
+                    
+                    if(customurl == "")
+                    {
+                        customurl = makeid(5)
+                    }
+                    else{
+                        customurl = customurl
+                    }
             const formdata = new FormData()
             formdata.append("image", image)
             var response = await fetch("https://api.imgur.com/3/image", {
@@ -175,7 +185,7 @@ client.query(
 
 q.Create(
   q.Collection('nbts'),
-  { data: { preview_url:  url, caption: document.getElementById("caption").value.replace(/\n/g, "<br>"), url: document.getElementById("url").value, views: 0, comments: [], time: date.toUTCString(), uploader: document.getElementById("uploader").value, file_size: filesize, file_name: filename, last_edited: lastedited} },
+  { data: { preview_url:  url, caption: document.getElementById("caption").value.replace(/\n/g, "<br>"), url: customurl, views: 0, comments: [], time: date.toUTCString(), uploader: document.getElementById("uploader").value, file_size: filesize, file_name: filename, last_edited: lastedited} },
 )
 )
 .then(function(ret){
@@ -183,6 +193,7 @@ console.log(ret)
 alert("Your image has been uploaded! The image can be accessed at https://vehd.github.io/?" + ret.data.url)
 
 });  
+                    
             
            
             }
@@ -196,7 +207,16 @@ alert("Your image has been uploaded! The image can be accessed at https://vehd.g
 
 
                 
-
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
 
     </script>
 </body>
