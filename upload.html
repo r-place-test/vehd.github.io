@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <title>Vehd || Upload</title>
+    <meta property="og:title" content="Vehd">
+<meta property="og:description" content="The best image hosting website.">
+<meta name="theme-color" content="#4287f5">
+    <script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+    <style>
+        body{
+            background-color: #121212;
+            font-family: 'Poppins';
+            color: white;
+            font-weight: 400;
+  line-height: 1.6;
+        }
+
+        @font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJbecmNE.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+
+img {
+  width: 100%;
+  max-height: 600px;
+  border-radius: 10px;
+}
+
+main {
+ 
+ max-width: 1000px;
+ padding: 3rem 0 4rem;
+ margin: 2rem auto;
+
+}
+
+article {
+ max-width: 550px;
+ margin: 0 auto;
+ padding: 1.5rem;
+ overflow-wrap: break-word;
+ background-color: #181818;
+ border-radius: 20px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.article2 {
+ max-width: 700px;
+ margin: 0 auto;
+ padding: 1.5rem;
+ overflow-wrap: break-word;
+ background-color: #181818;
+ border-radius: 20px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>AbdulFunny</h1>
+    </div>
+    <article>
+    <h2>Image</h2>
+    <p>Use CTRL + V to paste an image.</p>
+    <img id="previewpaste"><br><br>
+    </article><br><br>
+    <article>
+    <h2>Info</h2>
+    <label style="font-size: 18px;">Caption</label><br>
+    <textarea placeholder="Enter a caption..." style="border: none; height: 50px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical;" id="caption"></textarea><br><br>
+    <label style="font-size: 18px;">Custom URL Ending</label><br>
+    <input placeholder="Enter a URL ending..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="url"><br><br>
+    <label style="font-size: 18px;">Uploader Name</label><br>
+    <input placeholder="Enter a name..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="uploader">
+    </article>
+    <br><br>
+    <div style="text-align: center; margin-bottom: 50px;">
+    <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="test()">Upload</button>
+    </div>
+    <script>
+
+   var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEc2MXBwAAwC6c4ZOKRBhCZ2HKlE_XutVpl9Pp',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+
+  let image = ""
+        let url = ""
+        let filesize = ""
+        let lastedited = ""
+
+  window.addEventListener("paste", function(e){
+    var item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
+      
+    var blob = item.getAsFile();
+
+    var img = new Image();
+
+
+    document.getElementById("previewpaste").src = URL.createObjectURL(blob);
+    console.log(blob)
+    image = blob
+    filesize = ((blob.size) / 1024)
+            filesize = Math.round(filesize)
+            filename =blob.name
+            lastedited = blob.lastModifiedDate.toString().split("+")[0]
+});
+
+
+       
+        /*const file = document.getElementById("image")
+file.addEventListener("change", ev => {
+    document.getElementById("previewpaste").src = ""
+    console.log(ev.target.files[0])
+            image = ev.target.files[0]
+            document.getElementById("preview").src =  URL.createObjectURL(image);
+            filesize = ((ev.target.files[0].size) / 1024)
+            filesize = Math.round(filesize)
+            filename = ev.target.files[0].name
+            lastedited = ev.target.files[0].lastModifiedDate.toString().split("+")[0]
+            console.log(lastedited)
+            console.log(filesize)
+        })*/
+
+        async function test(){
+            
+            client.query(
+  q.Get(
+    q.Match(q.Index('post_by_url'), document.getElementById("url").value)
+  )
+)
+      
+.then(function(ret) {
+  
+                alert("This URL is taken!")
+                
+})
+.catch(async function(e){
+  
+                if(image == ""){
+                alert("Please upload an image.")
+            }
+            else{
+                if(document.getElementById("caption").value == "" || document.getElementById("url").value == "" || document.getElementById("uploader").value == "")
+                {
+                    alert("Please fill out all fields.")
+                }
+                else
+                {
+            const formdata = new FormData()
+            formdata.append("image", image)
+            var response = await fetch("https://api.imgur.com/3/image", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID 0d049d81097cf20"
+                },
+                body: formdata
+            })
+let data = await response.json()
+url = data.data.link
+let date = new Date();
+
+client.query(
+
+q.Create(
+  q.Collection('nbts'),
+  { data: { preview_url:  url, caption: document.getElementById("caption").value.replace(/\n/g, "<br>"), url: document.getElementById("url").value, views: 0, comments: [], time: date.toUTCString(), uploader: document.getElementById("uploader").value, file_size: filesize, file_name: filename, last_edited: lastedited} },
+)
+)
+.then(function(ret){
+console.log(ret)
+alert("Your image has been uploaded! The image can be accessed at https://vehd.github.io/?" + ret.data.url)
+
+});  
+            
+           
+            }
+            }
+                
+});
+           
+
+
+        }
+
+
+                
+
+
+    </script>
+</body>
