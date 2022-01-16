@@ -137,6 +137,7 @@ file.addEventListener("change", ev => {
         async function test(){
             
             let customurl = document.getElementById("url").value
+            console.log(customurl)
             let caption = document.getElementById("caption").value.replace(/\n/g, "<br>")
             let uploader = document.getElementById("uploader").value
             
@@ -162,6 +163,7 @@ file.addEventListener("change", ev => {
                     if(customurl == "")
                     {
                         customurl = makeid(5)
+                        console.log(customurl)
                     }
                     else{
                         customurl = customurl
@@ -193,12 +195,12 @@ client.query(
 
 q.Create(
   q.Collection('nbts'),
-  { data: { preview_url:  url, caption: document.getElementById("caption").value.replace(/\n/g, "<br>"), url: document.getElementById("url").value, views: 0, comments: [], time: date.toUTCString(), uploader: document.getElementById("uploader").value, file_size: filesize, file_name: filename, last_edited: lastedited} },
+  { data: { preview_url:  url, caption: caption, url: customurl, views: 0, comments: [], time: date.toUTCString(), uploader: uploader, file_size: filesize, file_name: filename, last_edited: lastedited} },
 )
 )
 .then(function(ret){
 console.log(ret)
-alert("Your image has been uplaoded!")
+alert("Your image has been uploaded! It can be found at https://vehd.github.io/?" + ret.data.url)
 
 });  
   }
