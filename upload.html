@@ -186,9 +186,17 @@ file.addEventListener("change", ev => {
                     }
                     
                     
- var reader = new FileReader();
-  reader.onloadend = function() {
-    url = reader.result
+                const formdata = new FormData()
+            formdata.append("image", image)
+            var response = await fetch("https://api.imgur.com/3/image", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID 0d049d81097cf20"
+                },
+                body: formdata
+            })
+let data = await response.json()
+url = data.data.link
     let date = new Date();
 
 client.query(
@@ -203,8 +211,7 @@ console.log(ret)
 alert("Your image has been uploaded! It can be found at https://vehd.github.io/?" + ret.data.url)
 
 });  
-  }
-  reader.readAsDataURL(image);
+
                     
             
            
