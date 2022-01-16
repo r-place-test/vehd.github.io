@@ -74,6 +74,7 @@ article {
     </article><br><br>
     <article>
     <h2>Info</h2>
+    <p>Leave any option blank for it to be auto-completed.</p>
     <label style="font-size: 18px;">Caption</label><br>
     <textarea placeholder="Enter a caption..." style="border: none; height: 50px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical;" id="caption"></textarea><br><br>
     <label style="font-size: 18px;">Custom URL Ending</label><br>
@@ -136,6 +137,8 @@ file.addEventListener("change", ev => {
         async function test(){
             
             let customurl = document.getElementById("url").value
+            let caption = document.getElementById("caption").value.replace(/\n/g, "<br>")
+            let uploader = document.getElementById("uploader").value
             
             client.query(
   q.Get(
@@ -154,11 +157,6 @@ file.addEventListener("change", ev => {
                 alert("Please upload an image.")
             }
             else{
-                if(document.getElementById("caption").value == "" || document.getElementById("uploader").value == "")
-                {
-                    alert("Please fill out all fields.")
-                }
-                else
                 {
                     
                     if(customurl == "")
@@ -168,6 +166,24 @@ file.addEventListener("change", ev => {
                     else{
                         customurl = customurl
                     }
+                    
+                    if(caption == "")
+                    {
+                        caption = filename
+                    }
+                    else{
+                        caption = caption
+                    }
+                    
+                    if(uploader == "")
+                    {
+                        uploader = "User"
+                    }
+                    else{
+                        uploader = uploader
+                    }
+                    
+                    
             const formdata = new FormData()
             formdata.append("image", image)
             var response = await fetch("https://api.imgur.com/3/image", {
@@ -185,7 +201,7 @@ client.query(
 
 q.Create(
   q.Collection('nbts'),
-  { data: { preview_url:  url, caption: document.getElementById("caption").value.replace(/\n/g, "<br>"), url: customurl, views: 0, comments: [], time: date.toUTCString(), uploader: document.getElementById("uploader").value, file_size: filesize, file_name: filename, last_edited: lastedited} },
+  { data: { preview_url:  url, caption: caption, url: customurl, views: 0, comments: [], time: date.toUTCString(), uploader: uploader, file_size: filesize, file_name: filename, last_edited: lastedited} },
 )
 )
 .then(function(ret){
@@ -196,7 +212,7 @@ alert("Your image has been uploaded! The image can be accessed at https://vehd.g
                     
             
            
-            }
+            
             }
                 
 });
