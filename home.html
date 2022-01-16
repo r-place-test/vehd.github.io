@@ -3,10 +3,10 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta property="og:type" content="website">
-<meta property="og:title" content="Vehd || All Uploads">
+<meta property="og:title" content="Vehd || Home">
 <meta property="og:description" content="The best image hosting website.">
 <meta name="theme-color" content="#4287f5">
-        <title>Vehd || All Uploads</title>
+        <title>Vehd</title>
         <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -61,16 +61,13 @@ img {
 
 article {
  max-width: 350px;
- max-height: 300px;
  padding: 1.5rem;
+ margin: 0 auto;
  overflow-wrap: break-word;
  background-color: #181818;
  border-radius: 20px;
- overflow:auto;
+ overflow:hidden;
  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
- margin-left: 30px;
- margin-bottom: 30px;
- float: left;
 }
 
 .article2 {
@@ -93,11 +90,17 @@ article {
     </style>
     <body onload="getData()"> 
         <div style="text-align: center;">
-            <h1>All Uploads</h1>
-            <h3 id="info">Loading..</h3>
-        </div><br>
-        <div class="inline">
-            <label id="test"></label>
+            <h1 style="font-size: 50px;">Project Vehd</h1>
+            <h2>The best image hoster.</h2>
+            <h2 id="info" style="font-size: 18px;">Loading...</h2><br>
+            <button onclick="window.location.href = 'https://vehd.github.io/upload'" style="border: none; border-radius: 5px; cursor: pointer; height: 55px; font-size: 20px; padding-left: 40px; padding-right: 40px; font-family: 'Poppins'; color: white; background-color: #18ab44;">Upload</button><br><br>
+            <button onclick="window.location.href = 'https://vehd-api.absq.repl.co/replies?url=aas'" style="border: none; border-radius: 5px; cursor: pointer; height: 55px; font-size: 20px; padding-left: 40px; padding-right: 40px; font-family: 'Poppins'; color: white; background-color: #18ab44;">API</button><br><br><br>
+            <h2>Random Image</h2>
+            <article style="margin-bottom: 60px;">
+                <label style="font-size: 18px;" id="caption"></label><br><br>
+                <img id="img"><br><br>
+                <label style="font-size: 16px;" id="postdata"></label>
+            </article>
         </div>
     </body>
     <script>
@@ -118,15 +121,21 @@ var faunadb = window.faunadb
           )
         )
         .then(function (x) {
-            let test = ""
             var mb = 0
+            var comments = 0
+            var views = 0
             x.data.reverse()
             for (let i = 0; i < x.data.length; i++) {
                 mb = mb + parseInt(x.data[i].data.file_size)
-                test = test + "<article><div style=\"text-align:center\"><a  href=\"index.html?"+ x.data[i].data.url + "\" style=\"font-size:23px; color:white\"><b>" + x.data[i].data.caption + "</b></a><br><i style=\"margin-right:5px\" class=\"far fa-eye\"></i><label style=\"margin-right:15px\">" +x.data[i].data.views + "</label><i style=\"margin-right:5px\" class=\"far fa-comment\"></i>" + x.data[i].data.comments.length + "<br><br><img src=\"" + x.data[i].data.preview_url + "\"><p><i>" + x.data[i].data.time +"</i></p></div></article>"
+                views = views + parseInt(x.data[i].data.views)
+                comments = comments + x.data[i].data.comments.length
             }
-            document.getElementById("test").innerHTML = test
-            document.getElementById("info").innerHTML = "Total Uploads: " + x.data.length + "<br>Total Amount Uploaded: " + mb + "KB [" + (Math.round((mb/ 1024) * 10) / 10) + "MB]"
+            const randomElement = x.data[Math.floor(Math.random() * x.data.length)];
+            console.log(randomElement)
+            document.getElementById("caption").innerHTML = "<b>" + randomElement.data.caption + "</b>"
+            document.getElementById("img").src = randomElement.data.preview_url
+            document.getElementById("postdata").innerHTML = "<i style=\"margin-right:5px\" class=\"far fa-eye\"></i><label style=\"margin-right:15px\">" + randomElement.data.views + "</label><i style=\"margin-right:5px\" class=\"far fa-comment\"></i>" + randomElement.data.comments.length
+            document.getElementById("info").innerHTML = "Uploads: " + x.data.length + "<br>Storage Used: " + (Math.round((mb/ 1024) * 10) / 10) + "MB<br>Views: " + views + "<br>Comments: " + comments
 
         });
 
