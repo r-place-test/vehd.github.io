@@ -184,31 +184,25 @@ file.addEventListener("change", ev => {
                     }
                     
                     
-            const formdata = new FormData()
-            formdata.append("image", image)
-            var response = await fetch("https://api.imgur.com/3/image", {
-                method: "post",
-                headers: {
-                    Authorization: "Client-ID 0d049d81097cf20"
-                },
-                body: formdata
-            })
-let data = await response.json()
-url = data.data.link
-let date = new Date();
+ var reader = new FileReader();
+  reader.onloadend = function() {
+    url = reader.result
+    let date = new Date();
 
 client.query(
 
 q.Create(
   q.Collection('nbts'),
-  { data: { preview_url:  url, caption: caption, url: customurl, views: 0, comments: [], time: date.toUTCString(), uploader: uploader, file_size: filesize, file_name: filename, last_edited: lastedited} },
+  { data: { preview_url:  url, caption: document.getElementById("caption").value.replace(/\n/g, "<br>"), url: document.getElementById("url").value, views: 0, comments: [], time: date.toUTCString(), uploader: document.getElementById("uploader").value, file_size: filesize, file_name: filename, last_edited: lastedited} },
 )
 )
 .then(function(ret){
 console.log(ret)
-alert("Your image has been uploaded! The image can be accessed at https://vehd.github.io/?" + ret.data.url)
+alert("Your image has been uplaoded!")
 
 });  
+  }
+  reader.readAsDataURL(image);
                     
             
            
