@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Absq Embeds || Upload</title>
+    <meta property="og:title" content="Absq Embeds || Upload">
+<meta property="og:description" content="Sexiest embeds">
+<meta name="theme-color" content="#4287f5">
+    <script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+    <style>
+
+@font-face {
+    font-family: 'Whitney';
+    font-style: normal;
+    font-weight: 200;
+    src: local('Whitney'), url('https://fonts.cdnfonts.com/s/38487/whitneymedium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Whitney Light';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Whitney Light'), url('https://fonts.cdnfonts.com/s/38487/whitneylight.woff') format('woff');
+}
+
+
+.article1 {
+  max-width: 576px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  overflow-wrap: break-word;
+  background-color: #2f3136;
+  border-radius: 20px;
+  border-style: solid;
+  border-left-width: 5px;
+  border-left-color: white;
+  border-right-color: #2f3136;
+  border-top-color: #2f3136;
+  border-bottom-color: #2f3136;
+  overflow:hidden;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+        body{
+            background-color: #121212;
+            font-family: 'Poppins';
+            color: white;
+            font-weight: 400;
+  line-height: 1.6;
+        }
+
+        @font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJbecmNE.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+
+img {
+  width: 100%;
+  max-height: 600px;
+  border-radius: 10px;
+}
+
+main {
+ 
+ max-width: 1000px;
+ padding: 3rem 0 4rem;
+ margin: 2rem auto;
+
+}
+
+article {
+ max-width: 550px;
+ margin: 0 auto;
+ padding: 1.5rem;
+ overflow-wrap: break-word;
+ background-color: #181818;
+ border-radius: 20px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.article2 {
+ max-width: 700px;
+ margin: 0 auto;
+ padding: 1.5rem;
+ overflow-wrap: break-word;
+ background-color: #181818;
+ border-radius: 20px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ margin-top: 100px;
+
+}
+
+
+
+    </style>
+</head>
+<body onload="preview()">
+    <div style="text-align: center;">
+        <h1>Absq Embeds</h1>
+    </div>
+    <article>
+    <h2>Create an embed</h2>
+    <p>Leave any option blank for it to not show up in the embed.</p>
+    <label style="font-size: 18px;">Site Name</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical;" type="text" id="sitename"><br><br>
+    <label style="font-size: 18px;">Title</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="title"><br><br>
+    <label style="font-size: 18px;">Description</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="description"><br><br>
+    <label style="font-size: 18px;">Image URL</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="imgurl"><br><br>
+    <label style="font-size: 18px;">Embed Colour</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 40px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="color" id="colour"><br><br>
+    <div style="text-align: center;">
+        <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="test()">Upload</button>
+    </div>
+    </article>
+    <br><br>
+    <div id="embed" class="article1">
+        <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="preview()">Refresh Preview</button><br><br>
+        <label id="embed_sitename" style="font-size: 16px; font-family: 'Whitney Light';">Loading...<br></label>
+        <a href="#" id="embed_title" style="font-size: 27px; font-family: 'Whitney'; text-decoration: none; margin-top: 15px; color: #12a7e1;"><b>Loading...<br></b></a>
+        <label style="font-family: 'Whitney Light'; font-size: 18px; margin-top: 15px;" id="embed_description">Loading...<br><br></label>
+        <img id="embed_image" src="https://cdn.discordapp.com/attachments/876942883184336906/905278106183540746/8r7xkxdw6rg71.png">
+    </div><br><br><br><br>
+    <script>
+
+   var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEdPfFkzAAwCudIvti7Ft2vkx80R-rkdKGc6aA',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+
+
+        async function test(){
+            let url = makeid(6)
+            let title = document.getElementById("title").value
+            let site_name = document.getElementById("sitename").value
+            let description = document.getElementById("description").value
+            let img = document.getElementById("imgurl").value
+            let colour = document.getElementById("colour").value.replace(/#/g, "")
+
+            if(title == "")
+            {
+                title = null
+            }
+            else{
+                title = title
+            }
+
+            if(site_name == "")
+            {
+                site_name = null
+            }
+            else{
+                site_name = site_name
+            }
+
+            if(description == "")
+            {
+               description = null
+            }
+            else{
+                description = description
+            }
+
+            if(img == "")
+            {
+                img = null
+            }
+            else{
+                img = img
+            }
+
+            if(colour == "")
+            {
+                colour = null
+            }
+            else{
+                colour = colour
+            }
+            
+            client.query(
+  q.Get(
+    q.Match(q.Index('data_from_url'), url)
+  )
+)
+      
+.then(function(ret) {
+  
+                alert("This URL is taken!")
+                
+})
+.catch(async function(e){
+  
+        
+                    
+
+client.query(
+
+q.Create(
+  q.Collection('embeds'),
+  { data: { url:  url, title: title, site_name: site_name, description: description, img: img, colour: colour} },
+)
+)
+.then(function(ret){
+console.log(ret)
+alert("Your embed has been uploaded! It can be used by the url https://absq.repl.co/?" + ret.data.url)
+
+});  
+  
+
+                      
+           
+            
+            
+                
+});
+           
+
+
+        }
+
+
+                
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
+
+function preview(){
+
+    if(document.getElementById("sitename").value == "")
+    {
+        document.getElementById("embed_sitename").style.display = "none"
+    }
+    else{
+        document.getElementById("embed_sitename").style.display = "block"
+        document.getElementById("embed_sitename").innerHTML = document.getElementById("sitename").value + "<br>"
+    }
+
+    if(document.getElementById("title").value == "")
+    {
+        document.getElementById("embed_title").style.display = "none"
+    }
+    else{
+        document.getElementById("embed_title").style.display = "block"
+        document.getElementById("embed_title").innerHTML = "<b>" + document.getElementById("title").value + "</b><br>"
+    }
+
+    if(document.getElementById("description").value == "")
+    {
+        document.getElementById("embed_description").style.display = "none"
+    }
+    else{
+        document.getElementById("embed_description").style.display = "block"
+        document.getElementById("embed_description").innerHTML = document.getElementById("description").value + "<br><br>"
+    }
+
+    if(document.getElementById("imgurl").value == "")
+    {
+        document.getElementById("embed_image").style.display = "none"
+    }
+    else{
+        document.getElementById("embed_image").style.display = "block"
+        document.getElementById("embed_image").src = document.getElementById("imgurl").value
+    }
+
+        document.getElementById("embed").style.borderLeftColor = document.getElementById("colour").value;
+}
+
+    </script>
+</body>
