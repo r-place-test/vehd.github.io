@@ -98,7 +98,7 @@ article {
 
     </style>
 </head>
-<body onload="preview()">
+<body>
     <div style="text-align: center;">
         <h1>Absq Embeds</h1>
     </div>
@@ -119,14 +119,7 @@ article {
         <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="test()">Upload</button>
     </div>
     </article>
-    <br><br>
-    <div id="embed" class="article1">
-        <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="preview()">Refresh Preview</button><br><br>
-        <label id="embed_sitename" style="font-size: 16px; font-family: 'Whitney Light';">Loading...<br></label>
-        <a href="#" id="embed_title" style="font-size: 27px; font-family: 'Whitney'; text-decoration: none; margin-top: 15px; color: #12a7e1;"><b>Loading...<br></b></a>
-        <label style="font-family: 'Whitney Light'; font-size: 18px; margin-top: 15px;" id="embed_description">Loading...<br><br></label>
-        <img id="embed_image" src="https://cdn.discordapp.com/attachments/876942883184336906/905278106183540746/8r7xkxdw6rg71.png">
-    </div><br><br><br><br>
+    <br><br><br><br>
     <script>
 
    var faunadb = window.faunadb
@@ -241,46 +234,6 @@ function makeid(length) {
    return result;
 }
 
-function preview(){
-
-    if(document.getElementById("sitename").value == "")
-    {
-        document.getElementById("embed_sitename").style.display = "none"
-    }
-    else{
-        document.getElementById("embed_sitename").style.display = "block"
-        document.getElementById("embed_sitename").innerHTML = document.getElementById("sitename").value + "<br>"
-    }
-
-    if(document.getElementById("title").value == "")
-    {
-        document.getElementById("embed_title").style.display = "none"
-    }
-    else{
-        document.getElementById("embed_title").style.display = "block"
-        document.getElementById("embed_title").innerHTML = "<b>" + document.getElementById("title").value + "</b><br>"
-    }
-
-    if(document.getElementById("description").value == "")
-    {
-        document.getElementById("embed_description").style.display = "none"
-    }
-    else{
-        document.getElementById("embed_description").style.display = "block"
-        document.getElementById("embed_description").innerHTML = document.getElementById("description").value + "<br><br>"
-    }
-
-    if(document.getElementById("imgurl").value == "")
-    {
-        document.getElementById("embed_image").style.display = "none"
-    }
-    else{
-        document.getElementById("embed_image").style.display = "block"
-        document.getElementById("embed_image").src = document.getElementById("imgurl").value
-    }
-
-        document.getElementById("embed").style.borderLeftColor = document.getElementById("colour").value;
-}
 
     </script>
 </body>
