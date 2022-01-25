@@ -117,6 +117,8 @@ article {
     <input placeholder="Enter something..." style="border: none; height: 40px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="color" id="colour"><br><br>
     <label style="font-size: 18px;">Redirect URL</label><br>
     <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="redirect"><br><br>
+     <label style="font-size: 18px;">Custom URL Ending</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="customurl"><br><br>
     <div style="text-align: center;">
         <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="test()">Upload</button>
     </div>
@@ -134,7 +136,7 @@ article {
 
 
         async function test(){
-            let url = makeid(6)
+            let url =  document.getElementById("customurl").value
             let title = document.getElementById("title").value
             let site_name = document.getElementById("sitename").value
             let description = document.getElementById("description").value
@@ -148,6 +150,14 @@ article {
             }
             else{
                 title = title
+            }
+            
+            if(url == "")
+            {
+                url = makeid(6)
+            }
+            else{
+                url = url
             }
 
             if(site_name == "")
