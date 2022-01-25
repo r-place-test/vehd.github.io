@@ -115,6 +115,8 @@ article {
     <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="imgurl"><br><br>
     <label style="font-size: 18px;">Embed Colour</label><br>
     <input placeholder="Enter something..." style="border: none; height: 40px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="color" id="colour"><br><br>
+    <label style="font-size: 18px;">Redirect URL</label><br>
+    <input placeholder="Enter something..." style="border: none; height: 20px; border-radius: 7px; background-color: #202020; padding: 5px; color: white; width:99%; font-family: 'Poppins'; resize: vertical; margin-bottom: 10px;" type="text" id="redirect"><br><br>
     <div style="text-align: center;">
         <button style="border: none; border-radius: 5px; cursor: pointer; height: 40px; font-size: 15px; padding-left: 10px; padding-right: 10px; font-family: 'Poppins'; color: white; background-color: #18ab44; padding-left: 20px; padding-right: 20px;" onclick="test()">Upload</button>
     </div>
@@ -136,6 +138,7 @@ article {
             let title = document.getElementById("title").value
             let site_name = document.getElementById("sitename").value
             let description = document.getElementById("description").value
+            let redirect = document.getElementById("redirect").value
             let img = document.getElementById("imgurl").value
             let colour = document.getElementById("colour").value.replace(/#/g, "")
 
@@ -180,6 +183,14 @@ article {
                 colour = colour
             }
             
+            if(redirect == "")
+            {
+                redirect = null
+            }
+            else{
+                redirect = redirect
+            }
+            
             client.query(
   q.Get(
     q.Match(q.Index('data_from_url'), url)
@@ -200,7 +211,7 @@ client.query(
 
 q.Create(
   q.Collection('embeds'),
-  { data: { url:  url, title: title, site_name: site_name, description: description, img: img, colour: colour} },
+  { data: { url:  url, title: title, site_name: site_name, description: description, img: img, colour: colour, redirect: redirect} },
 )
 )
 .then(function(ret){
