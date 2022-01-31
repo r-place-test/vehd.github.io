@@ -1,0 +1,511 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+        <title>DiscordDev Build v2.0</title>
+    </head>
+    <style>
+        body{
+            font-family: 'Montserrat';
+            color: white;
+            word-wrap: break-word;
+            overflow: hidden;
+            margin: 0;
+            background-color: #181818; 
+            margin-top: 70px;
+
+
+        }
+
+        ::-webkit-scrollbar {
+  width: 15px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #202020; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #242424; 
+}
+
+
+
+        article {
+ max-width:50%;
+ padding: 1rem;
+ overflow-wrap: break-word;
+ background-color: #191919;
+ border-radius: 10px;
+ overflow:hidden;
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ margin-bottom: 15px;
+}
+
+.navbar {
+            overflow: hidden;
+  background-color: #121212;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 25px;
+}
+
+.navbar .ij {
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 25px;
+}
+
+
+
+        
+
+
+        @font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/montserrat/v21/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw0aXpsog.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+
+        @keyframes slideInFromLeft{
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+
+.test{
+    animation: 0.3s ease-out 0s 1 slideInFromLeft;
+    display: inline-block;
+    word-break: break-word;
+    
+    
+
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #5865F2;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #5865F2;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+    </style>
+    <body onload="start()">
+        <div id="nav" class="navbar">
+            <a id="text" href="#"><i class="fab fa-discord"></i><label style="margin-left: 10px;">DiscordDev Build v2.0</label></a>
+           <a class="ij"><label style="margin-right: 10px;">Auto Scroll</label><label class="switch">
+            <input id="autoscroll" type="checkbox" onclick="test()" checked>
+            <span class="slider round"></span>
+          </label></a>
+          </div>
+          <div style="padding:15px; padding-bottom: 25px;" id="msgs">
+              
+          </div>
+    </body>
+    <script>
+
+var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEeDsSnvAAyITXEfZAt5ZFOg2QZDVYR092ArRa',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+
+
+        let urlParams = new URLSearchParams(window.location.search);
+        let BOT_TOKEN = ""
+let GATEWAY_URL = "wss://gateway.discord.gg/?v=9&encoding=json";
+let GUILD_ID = ""
+let CHANNEL_ID = ""
+let ws = null;
+let reference = "";
+let content = "";
+let title = "";
+
+        function start(){        
+
+
+            client.query(
+  q.Get(
+    q.Match(q.Index('data_from_url'), urlParams.get('id'))
+  )
+)
+.then(function(ret){ 
+
+    
+    let box = document.createElement('div');
+	box.innerHTML = "<article><font style=\"color:#5865F2\"><label style=\"font-size:20px\"><b>DiscordDev Build v2.0</b></label><br><br><i><b>Developed by absq<br>You are currently connected to: " + ret.data.title  + "<br><br>Chatting will be added soon</b></i></font></article>";
+	box.classList.add('test');
+    box.style.display = "flex";
+    box.style.alignItems = "top";
+    box.style.marginBottom = "20px";
+    document.getElementById("msgs").appendChild(box);
+
+})
+  
+.catch(function(e){
+
+
+    let box = document.createElement('div');
+	box.innerHTML = "<article><font style=\"color:#1039b5\"><label style=\"font-size:20px\"><b>DiscordDev Build v2.0</b></label><br><br><i><b>Developed by absq<br>You are currently connected to: " + "Unknown Server"  + "<br><br>Chatting will be added soon</b></i></font></article>";
+	box.classList.add('test')
+    box.style.display = "flex";
+    box.style.alignItems = "top";
+    box.style.marginBottom = "20px";
+    document.getElementById("msgs").appendChild(box);
+
+});
+
+window.scrollTo(0,document.body.scrollHeight);
+
+
+
+            client.query(
+  q.Get(
+    q.Match(q.Index('data_from_url'), urlParams.get('id'))
+  )
+)
+.then(function(ret){ 
+     console.log(ret)
+    GUILD_ID = ret.data.guild
+    BOT_TOKEN = ret.data.token
+    CHANNEL_ID = ret.data.channel
+    title = ret.data.title
+    connect();
+
+})
+  
+.catch(function(e){
+        
+    history.back();
+
+});
+
+
+            
+
+        }
+
+function connect() {
+    console.log(GUILD_ID)
+    ws = new WebSocket(GATEWAY_URL);
+    ws.onmessage = messageHandler;
+    ws.onopen = connectsuccess;
+    console.log(ws)
+    ws.onclose = connect; 
+}
+
+function test(){
+    if(document.getElementById("autoscroll").checked == true)
+    {
+        window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+        document.body.style.overflow = "hidden"
+    }
+    else{
+        document.body.style.overflow = "auto"
+    }
+}
+
+function connectsuccess(){
+
+}
+
+function messageHandler(message) {
+    let json = message.data;
+    json = JSON.parse(json);
+    
+    if (json.op == 10) {
+        doLogin();
+    } else if (json.op == 0) {
+if(json.d.guild_id == GUILD_ID){
+    console.log(json)
+if(json.d.channel_id == CHANNEL_ID){
+        if (json.t == "MESSAGE_CREATE") {
+reference = json.d.referenced_message
+console.log(json.d.attachments)
+attachments = json.d.attachments
+content = json.d.content
+if(reference == null)
+{
+reference = ""
+}
+else{
+    
+    let test2 = reference.content
+var arr2 = test2.match(/<:\w+:[0-9]+>/g)
+console.log(arr)
+if(arr2 != null)
+{
+for (let i = 0; i < arr2.length; i++) {
+test2 = test2.replace(arr2[i], "<img style=\"width:17px; height:17px; padding-left:3px; padding-right:3px; vertical-align:middle\" src=\"https://cdn.discordapp.com/emojis/" + arr2[i].split(":")[2].replace(/>/g, ".png\">"))
+}
+}
+    reference.content = test2.replace(/\n/g, "<br>")
+
+    test2 = reference.content
+arr2 = test2.match(/<a:\w+:[0-9]+>/g)
+console.log(arr)
+if(arr2 != null)
+{
+for (let i = 0; i < arr2.length; i++) {
+test2 = test2.replace(arr2[i], "<img style=\"width:17px; height:17px; padding-left:3px; padding-right:3px; vertical-align:middle\" src=\"https://cdn.discordapp.com/emojis/" + arr2[i].split(":")[2].replace(/>/g, ".gif\">"))
+}
+}
+    reference.content = test2.replace(/\n/g, "<br>")
+
+
+
+    test2 = reference.content
+arr2 = test2.match(/<@!*&*[0-9]+>/g)
+console.log(arr)
+if(arr2 != null)
+{
+for (let i = 0; i < arr2.length; i++) {
+    test2 = test2.replace(arr2[i], "<label style=\"background-color:rgba(88, 101, 242, 0.3); padding:2px; border-radius:3px; font-size:17px;\">@" + reference.mentions[reference.mentions.findIndex(id => id.id === arr2[i].split("!")[1].replace(/>/g, ""))].username + "</label>")
+}
+}
+    reference.content = test2.replace(/\n/g, "<br>")
+
+
+    
+console.log(json.d.message_reference.message_id)
+
+reference = "<label onclick=\"transport('" + json.d.message_reference.message_id + "')\" style=\"font-size:17px; color:#f0f0f0; cursor:pointer\"><i><i class=\"fas fa-angle-double-right\"></i> " + reference.author.username + "#" + reference.author.discriminator + ": " + reference.content + "</i></label><br><br>"
+}
+if(content == "" && json.d.attachments.length == 0)
+{
+content = "<font style=\"color: #FEE75C\">This type of message is not supported yet.</font>"
+}
+else{
+
+    let test = content
+var arr = test.match(/<:\w+:[0-9]+>/g)
+console.log(arr)
+if(arr != null)
+{
+for (let i = 0; i < arr.length; i++) {
+test = test.replace(arr[i], "<img style=\"width:25px; height:25px; padding-left:3px; padding-right:3px; vertical-align:middle\" src=\"https://cdn.discordapp.com/emojis/" + arr[i].split(":")[2].replace(/>/g, ".png\">"))
+}
+}
+    content = test.replace(/\n/g, "<br>")
+
+    test = content
+arr = test.match(/<a:\w+:[0-9]+>/g)
+console.log(arr)
+if(arr != null)
+{
+for (let i = 0; i < arr.length; i++) {
+test = test.replace(arr[i], "<img style=\"width:25px; height:25px; padding-left:3px; padding-right:3px; vertical-align:middle\" src=\"https://cdn.discordapp.com/emojis/" + arr[i].split(":")[2].replace(/>/g, ".gif\">"))
+}
+}
+    content = test.replace(/\n/g, "<br>")
+
+    test = content
+arr = test.match(/<@!*&*[0-9]+>/g)
+console.log(arr)
+if(arr != null)
+{
+for (let i = 0; i < arr.length; i++) {
+    console.log(json.d.mentions.findIndex(id => id.id === arr[i].split("!")[1].replace(/>/g, "")))
+test = test.replace(arr[i], "<label style=\"background-color:rgba(88, 101, 242, 0.3); padding:2px; border-radius:3px;\">@" + json.d.mentions[json.d.mentions.findIndex(id => id.id === arr[i].split("!")[1].replace(/>/g, ""))].username + "</label>")
+}
+}
+    content = test.replace(/\n/g, "<br>")
+
+
+}
+
+
+
+
+
+
+if(json.d.attachments.length == 0)
+{
+    attachments = ""
+}
+else{
+    attachments = "<br><img onload=\"window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight)\" style=\"max-width:90%; max-height:300px; border-radius:5px;\" src=\"" + json.d.attachments[0].proxy_url + "\">"
+}
+let box = document.createElement('div');
+	box.innerHTML = "<img style=\"border-radius:50%; width:60px; height:60px;\" onerror=\"this.src='https://support.discord.com/hc/user_images/l12c7vKVRCd-XLIdDkLUDg.png'\" src=\"" + "https://cdn.discordapp.com/avatars/" + json.d.author.id + "/" + json.d.author.avatar + ".png" + "\"><label style=\"margin-left:10px\"><label style=\"font-size:20px; color:white\"><b>" +  json.d.author.username + "<font style=\"color:#cfcfcf; font-size:17px;\">#" + json.d.author.discriminator + "</font></b></label><br><label style=\"font-size:19px;\">" + reference + content + attachments + "</label></label>";
+	box.classList.add('test');
+    box.style.display = "flex";
+    box.id = json.d.id;
+    box.style.alignItems = "top";
+    box.style.marginBottom = "20px";
+    document.getElementById("msgs").appendChild(box);
+    if(document.getElementById("autoscroll").checked == true)
+    {
+window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+    }
+    else{
+
+    }
+        }
+      }
+    }
+
+    if(json.d.guild_id == GUILD_ID){
+if(json.d.channel_id == CHANNEL_ID){
+        if (json.t == "MESSAGE_DELETE") {
+document.getElementById(json.d.id).style.color = "#ED4245";
+
+
+      }
+    }
+    }
+
+
+
+
+}
+}
+
+
+
+
+function doLogin() {
+    let msg = { 
+        "token": BOT_TOKEN,
+        "properties": {
+            "$os": "browser",
+            "$browser": "chrome",
+            "$device": "cloud9"
+        },
+        "compress": false
+    };
+    let payload = {"op": 2, "d": msg};
+    ws.send(JSON.stringify(payload));
+}
+
+function sleep(milisec) {
+return new Promise(resolve => {
+setTimeout(() => { resolve('') }, milisec);
+})
+}
+
+async function transport(ids){
+    console.log(ids)
+    document.getElementById(ids).scrollIntoView({block: "center"});
+    document.getElementById("autoscroll").checked = false;
+    document.body.style.overflow = "auto"
+    document.getElementById(ids).style.borderRadius = "5px"
+    document.getElementById(ids).style.backgroundColor = "rgba(88, 101, 242, 0.1)"
+    await sleep(50);
+    document.getElementById(ids).style.backgroundColor = "rgba(88, 101, 242, 0.2)"
+    await sleep(50);
+    document.getElementById(ids).style.backgroundColor = "rgba(88, 101, 242, 0.3)"
+    await sleep(1000);
+    document.getElementById(ids).style.backgroundColor = "rgba(88, 101, 242, 0.2)"
+    await sleep(50);
+    document.getElementById(ids).style.backgroundColor = "rgba(88, 101, 242, 0.1)"
+    await sleep(50);
+    document.getElementById(ids).style.backgroundColor = "rgba(88, 101, 242, 0.0)"
+    document.getElementById(ids).style.borderRadius = "0px"
+    await sleep(500);
+    document.getElementById("autoscroll").checked = true;
+    document.body.style.overflow = "hidden"
+    window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+    
+}
+
+
+
+    </script>
+</html>
